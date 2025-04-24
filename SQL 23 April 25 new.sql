@@ -1,3 +1,7 @@
+show databases;
+create database a325;
+show databases;
+
 use a325;
 create table product_demo(
 id int,
@@ -131,6 +135,92 @@ select count(*) from aggregate functions;
 
 ############# Greatest and least function ############
 select greatest(1,2,56,78), least(1,2,56,78);
+
+use a325;
+create table customers(
+customer_id int primary key , first_name varchar(100),last_name varchar(100),age int , country varchar(100));
+
+##################### Date function
+use a325;
+select current_date();
+
+select date_format(current_date(),"Y%-%M_D%") as Formatted_date;
+
+select current_date() as Today,
+	   Date_Add(current_date(),Interval 7 day) as Exam_Date,
+       date_sub(current_date(),Interval 1 month) as last_month_date;
+       
+######### Date difference ###########
+select datediff(current_date(), "2024-04-20");
+
+select case 
+            when current_date> "2025-05-01" then "Quarter 2"
+            else "Quarter 1"
+            end as Quarter_comparison;
+######## as is for aliasing that is giving table a temporary name i.e renaming a column 
+
+########### Time and Now function ############
+select current_time(), now();
+select dayofweek(current_date());  #1- sunday
+select last_day (current_date ());
+
+##### Extraction
+select extract(Year from now()) Year,
+       extract(Month from now()) Month,
+       extract(Day from now()) Day,
+       extract(hour from now()) Hour,
+       extract(minute from now()) Minute,
+       extract(Second from now()) Second;
+       
+	######## or this method to extract
+    
+select extract(Year from "2025-04-03") Year,
+		year ("2025-04-03"),
+        month("2025-04-03"),
+        day("2025-04-03");
+        
+        select synsdate();
+        
+        ################ Group by having ######################
+        
+show databases;
+use new_data_gh;
+show tables ;
+desc cust_gh;
+select *from cust_gh;
+
+select distinct country from cust_gh; ---  ### to remove repeated countries
+
+select country, count(*) from cust_gh
+group by country;
+
+select * from cust_gh group by country;  #### for grouping group by 
+select country , avg(age), min(age), max(age),count(age),sum(age) from cust_gh
+group by country ;                       
+ 
+ ######### filtering it group by having ######
+select country ,avg(age) from cust_gh         
+group by country
+having avg(age)>25;         ###### calciulate each country average i.e uae , uk etc
+
+select country, avg(age) from cust_gh
+group by country 
+having avg(age)>25 and count(*)>2;       ##### from , group by , having , count 
+
+select country , avg(age) from cust_gh
+group by country 
+having avg(age)>25
+order by avg(age);                         ###  from,group by,having,order by
+
+select * from cust_gh
+where country like "U%";                  #### countries whch starts U name 
+
+select country , avg(age) from cust_gh   
+where country like "U%"  
+group by country 
+having avg(age)>25
+order by avg(age);                        ##### where U% means full text i.e uae , 
+
 
 
 
