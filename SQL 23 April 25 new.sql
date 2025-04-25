@@ -219,9 +219,86 @@ select country , avg(age) from cust_gh
 where country like "U%"  
 group by country 
 having avg(age)>25
-order by avg(age);                        ##### where U% means full text i.e uae , 
+order by avg(age);                        ##### where U% means full text i.e uae 
 
+##########_---------------------------------------------------------
+show tables;
+desc employee_copy;
+desc employee_sq;
+select *from employee_copy;
+select *from employee_sq;
 
+select max(emp_salary) from employee_sq ;      ##### to get the highest salary i.e 113000
+
+####################### SUBQUERY ###############3
+select * from employee_sq
+where emp_salary =(select max(emp_salary)
+ from employee_sq);
+
+update employee_sq set emp_salary=900000 where emp_id=112;
+
+delete from employee_sq where emp_id=112;
+ 
+########## all employee details who are getting salary above average salary
+select avg (emp_salary) 
+from employee_sq;
+select * from employee_sq
+
+where emp_salary >(select min(emp_age)
+                         from employee_sq);
+                         
+ ######## give employee names age greater than minimum age of employees
+ 
+ select * from employee_sq
+ where emp_age> (select min(emp_age)
+ from employee_sq);
+
+select *from employee_sq
+where emp_id in (106,107,108,110,111);
+-------- or this method to find
+select*from employee_sq
+where emp_id=106 or emp_id=107 or emp_id=107 or emp_id=108 or emp_id=110 or emp_id=111;
+
+select * from employee_sq
+where emp_id in (select emp_id from employee_sq
+             where emp_age>(select min(emp_age)
+             from employee_sq));
+                          
+   update employee_sq set emp_salary=emp_salary+3000 ##### increment salary on above average salaried employees
+   where emp_id in (select emp_id from employee_copy where emp_age>28);
+   
+   select *  from employee_sq
+   where emp_id in ( select emp_id from employee_sq
+   where emp_age>(select min(emp_age)
+   from employee_sq));
+   
+   delete from employee_sq
+   where emp_id in (select emp_id from employee_copy where emp_age>28);
+   ######## updation and deletion by subquery
+   ---------------------------
+   select *from products;
+   select *from orders;
+   ------
+   select prod_id from products where prod_price>1000; ---
+   
+   insert into orders 
+   select prod_id, prod_name,prod_price from products  ## create new table where you include 
+   where prod_id in (select prod_id from products where prod_price>1000);
+   
+   select * from teacher;
+   select * from student;
+   
+
+   select age from teacher where age > all(select sage from student);
+   ####### all  means all of students age greater 
+   
+   select age from teacher where age > any (select sage from student);
+   ########### any means any one student greater age then teacher
+   
+   select age from teacher where not exists ( select sage from student where sage>31);
+   
+                          
+				
 
 
 
